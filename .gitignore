@@ -1,0 +1,41 @@
+﻿# .NET
+bin/
+obj/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build result
+*.dll
+*.exe
+*.app
+*.log
+
+# Web artifacts
+wwwroot/lib/
+wwwroot/dist/
+node_modules/
+*.db
+
+# Auto-generated files
+Generated_Code/
+
+# Local development DBs
+*.db
+*.mdf
+*.ldf
+*.sqlite
+
+**/appsettings.Development.json
+secrets.json
+
+.idea/
+*.sln.iml
+
+.vscode/
+.vs/
+
+.DS_Store
+Thumbs.db
