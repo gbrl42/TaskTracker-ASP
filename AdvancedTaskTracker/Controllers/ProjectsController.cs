@@ -22,7 +22,7 @@ namespace AdvancedTaskTracker.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await FindUserProjectsAsync());
+            return View(await GetUserProjectsAsync());
         }
 
         // GET: Projects/Details/5
@@ -34,7 +34,7 @@ namespace AdvancedTaskTracker.Controllers
                 return NotFound();
             }
 
-            var project = await FindUserProjectAsync(id.Value);
+            var project = await GetUserProjectAsync(id.Value);
             if (project == null)
             {
                 return NotFound();
@@ -77,7 +77,7 @@ namespace AdvancedTaskTracker.Controllers
                 return NotFound();
             }
 
-            var project = await FindUserProjectAsync(id.Value);
+            var project = await GetUserProjectAsync(id.Value);
             if (project == null)
             {
                 return NotFound();
@@ -96,7 +96,7 @@ namespace AdvancedTaskTracker.Controllers
                 return NotFound();
             }
             
-            var project = await FindUserProjectAsync(editedProject.ProjectId);
+            var project = await GetUserProjectAsync(editedProject.ProjectId);
             if (project == null)
             {
                 return NotFound();
@@ -137,7 +137,7 @@ namespace AdvancedTaskTracker.Controllers
                 return NotFound();
             }
 
-            var project = await FindUserProjectAsync(id.Value);
+            var project = await GetUserProjectAsync(id.Value);
             if (project == null)
             {
                 return NotFound();
@@ -152,7 +152,7 @@ namespace AdvancedTaskTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var project = await FindUserProjectAsync(id);
+            var project = await GetUserProjectAsync(id);
             if (project == null)
             {
                 return NotFound();
@@ -168,7 +168,7 @@ namespace AdvancedTaskTracker.Controllers
             return _context.Projects.Any(p => p.ProjectId == id && p.UserId == UserId);
         }
 
-        private async Task<Project?> FindUserProjectAsync(int id)
+        private async Task<Project?> GetUserProjectAsync(int id)
         {
             return await _context.Projects.FirstOrDefaultAsync(p => p.ProjectId == id && p.UserId == UserId);
         }
