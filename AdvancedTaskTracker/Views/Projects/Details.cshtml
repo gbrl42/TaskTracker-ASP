@@ -22,6 +22,19 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tasks)
+        </dt>
+        <dd class = "col-sm-10">
+            @foreach(var task in Model.Tasks)
+            {
+                <div>
+                <a asp-action="Details" asp-controller="Tasks" asp-route-id="@task.Id">
+                    @task.Title
+                </a>
+                </div>
+            }
+        </dd>
     </dl>
 </div>
 <div>

@@ -34,7 +34,7 @@ namespace AdvancedTaskTracker.Controllers
                 return NotFound();
             }
 
-            var project = await GetUserProjectAsync(id.Value);
+            var project = await GetUserProjectAsync(id.Value, true);
             if (project == null)
             {
                 return NotFound();
@@ -168,9 +168,16 @@ namespace AdvancedTaskTracker.Controllers
             return _context.Projects.Any(p => p.ProjectId == id && p.UserId == UserId);
         }
 
-        private async Task<Project?> GetUserProjectAsync(int id)
+        private async Task<Project?> GetUserProjectAsync(int id, bool includeTasks = false)
         {
-            return await _context.Projects.FirstOrDefaultAsync(p => p.ProjectId == id && p.UserId == UserId);
+            var query = _context.Projects.AsQueryable();
+
+            if (includeTasks)
+            {
+                query = query.Include(p => p.Tasks);
+            }
+            
+            return await query.FirstOrDefaultAsync(p => p.ProjectId == id && p.UserId == UserId);
         }
     }
 }
