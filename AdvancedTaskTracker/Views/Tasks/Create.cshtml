@@ -3,14 +3,12 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="row offset-sm-3">
+    <div class="bg-light m-3 p-3 rounded border col-sm-7">
+        <h1>Create Task</h1>
 
-<h1>Create</h1>
-
-<h4>TaskItem</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+        <hr />
+        <form asp-action="Create" class="">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -19,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,7 +35,7 @@
                 <select asp-for="Status" class="form-control" asp-items="Model.StatusOptions"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pb-3">
                 <label asp-for="ProjectId" class="control-label"></label>
                 <select asp-for="ProjectId" class ="form-control" asp-items="Model.ProjectOptions"></select>
             </div>
@@ -45,11 +43,11 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
