@@ -1,65 +1,172 @@
-@model IEnumerable<AdvancedTaskTracker.Models.TaskItem>
+@model AdvancedTaskTracker.ViewModels.TasksIndexViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tasks";
 }
 
-<h1>Index</h1>
+<h1>Tasks</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary btn-lg">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Priority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<div class="row border-bottom bg-light-subtle p-2 fw-semibold d-flex align-items-center">
+    <div class="col-sm-4">
+        <a class="text-decoration-none text-reset"
+           asp-action="Index" 
+           asp-route-sortBy="Title" 
+           asp-route-asc="@(Model.SortBy == "Title" && Model.Ascending ? "false" : "true")">
+            @Html.DisplayNameFor(m => m.Tasks.First().Title)
+            @if (Model.SortBy == "Title")
+            {
+                <span>
+                    @(Model.Ascending ? "▲" : "▼")
+                </span>
+            }
+        </a>
+    </div>
+    <div class="col-sm-2">
+        <a class="text-decoration-none text-reset"
+           asp-action="Index" 
+           asp-route-sortBy="DueDate" 
+           asp-route-asc="@(Model.SortBy == "DueDate" && Model.Ascending ? "false" : "true")">
+            @Html.DisplayNameFor(m => m.Tasks.First().DueDate)
+            @if (Model.SortBy == "DueDate")
+            {
+                <span>
+                    @(Model.Ascending ? "▲" : "▼")
+                </span>
+            }
+        </a>
+    </div>
+    <div class="col-sm-1">
+        <a class="text-decoration-none text-reset"
+           asp-action="Index" 
+           asp-route-sortBy="Priority" 
+           asp-route-asc="@(Model.SortBy == "Priority" && Model.Ascending ? "false" : "true")">
+            @Html.DisplayNameFor(m => m.Tasks.First().Priority)
+            @if (Model.SortBy == "Priority")
+            {
+                <span>
+                    @(Model.Ascending ? "▲" : "▼")
+                </span>
+            }
+        </a>
+    </div>
+    <div class="col-sm-1">
+        <a class="text-decoration-none text-reset"
+           asp-action="Index" 
+           asp-route-sortBy="Status" 
+           asp-route-asc="@(Model.SortBy == "Status" && Model.Ascending ? "false" : "true")">
+            @Html.DisplayNameFor(m => m.Tasks.First().Status)
+            @if (Model.SortBy == "Status")
+            {
+                <span>
+                    @(Model.Ascending ? "▲" : "▼")
+                </span>
+            }
+        </a>
+    </div>
+    <div class="col-sm-2">
+        <a class="text-decoration-none text-reset"
+           asp-action="Index" 
+           asp-route-sortBy="Project"
+           asp-route-asc="@(Model.SortBy == "Project" && Model.Ascending ? "false" : "true")">
+            @Html.DisplayNameFor(m => m.Tasks.First().Project)
+            @if (Model.SortBy == "Project")
+            {
+                <span>
+                    @(Model.Ascending ? "▲" : "▼")
+                </span>
+            }
+        </a>
+    </div>
+    <div class="col-sm-2">
+    </div>
+</div>
+
+@foreach (var item in Model.Tasks)
+{
+    <div class="row border rounded bg-light p-1 d-flex align-items-center" style="height: 60px">
+        <div class="col-sm-4">
+            <a class="text-decoration-none text-reset" asp-action="Details" asp-route-id="@item.Id">
+                @item.Title
+            </a>
+        </div>
+        <div class="col-sm-2">
+            @item.DueDate?.ToString("yyyy-MM-dd HH:mm")
+        </div>
+        
+        <form asp-action="UpdateTaskStatusPriority" method="post" class="col-sm-2 d-flex align-items-center">
+            <input type="hidden" name="TaskId" value="@item.Id" />
+            <input type="hidden" name="sortBy" value="@Model.SortBy" />
+            <input type="hidden" name="asc" value="@Model.Ascending.ToString().ToLower()" />
+            <input type="hidden" name="page" value="@Model.Page" />
+            <input type="hidden" name="pageSize" value="@Model.PageSize" />
+            
+            <select name="Priority" class="form-select me-sm-1" onchange="this.form.submit()">
+                @foreach (var option in Model.PriorityOptions)
+                {
+                    var enumOption = (Priority)Enum.Parse(typeof(Priority), option.Value);
+                    if (enumOption == item.Priority)
+                    {
+                        <option value="@option.Value" selected>@option.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                    }
+                }
+            </select>
+
+            <select name="Status" class="form-select me-sm-2" onchange="this.form.submit()">
+                @foreach (var option in Model.StatusOptions)
+                {
+                    var enumOption = (Status)Enum.Parse(typeof(Status), option.Value);
+                    if (enumOption == item.Status)
+                    {
+                        <option value="@option.Value" selected>@option.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                    }
+                }
+            </select>
+        </form>
+        <div class="col-sm-2">
+            <a class="text-decoration-none text-reset" asp-controller="Projects" asp-action="Details" asp-route-id="@item.ProjectId">
+                @item.Project?.Name
+            </a>
+        </div>
+        
+        <div class="col-sm-2">
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            &mid;
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            &mid;
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+
+<ul class="pagination mt-3 justify-content-center">
+    <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+        <a class="page-link" href="@Url.Action("Index", new { page = Model.Page - 1, sortBy = Model.SortBy, asc = Model.Ascending })" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    @foreach(var pageNumber in Model.GetPageNumbers())
+    {
+        <li class="page-item @(pageNumber == Model.Page ? "active" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { page = pageNumber, sortBy = Model.SortBy, asc = Model.Ascending })">@pageNumber</a>
+        </li>
+    }
+    <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
+        <a class="page-link" href="@Url.Action("Index", new { page = Model.Page + 1, sortBy = Model.SortBy, asc = Model.Ascending })" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+</ul>
+

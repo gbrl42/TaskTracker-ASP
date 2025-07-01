@@ -1,41 +1,40 @@
 @model IEnumerable<AdvancedTaskTracker.Models.Project>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Projects";
 }
 
-<h1>Index</h1>
+<h1>Projects</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary btn-lg">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-            </td>
-        </tr>
+<div class="row border-bottom bg-light-subtle p-2 fw-semibold d-flex align-items-center">
+    <div class="col-sm-4">
+        @Html.DisplayNameFor(m => m.Name)
+    </div>
+    <div class="col-sm-6">
+        @Html.DisplayNameFor(m => m.Description)
+    </div>
+    <div class="col-sm-2">
+    </div>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="row border rounded bg-light p-1 d-flex align-items-center" style="height: 60px">
+        <div class="col-sm-4">
+            @item.Name
+        </div>
+        <div class="col-sm-6">
+            @item.Description
+        </div>
+        <div class="col-sm-2">
+            <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>
+            &mid;
+            <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
+            &mid;
+            <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
