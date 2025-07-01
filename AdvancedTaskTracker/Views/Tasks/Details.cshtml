@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Task Details</h1>
 
 <div>
-    <h4>TaskItem</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -43,7 +42,7 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Project)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 pb-3">
             @if (Model.Project != null)
             {
                 <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">

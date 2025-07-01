@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Project Details</h1>
 
 <div>
-    <h4>Project</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -25,7 +24,7 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tasks)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 pb-3">
             @foreach(var task in Model.Tasks)
             {
                 <div>
