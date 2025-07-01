@@ -24,11 +24,36 @@ namespace AdvancedTaskTracker.Controllers
 
         // GET: Tasks
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortBy, bool asc = true, int page = 1, int pageSize = 10)
         {
             var tasks = await GetUserTaskItemsAsync(true);
-            return View(tasks);
+            
+            var vm = new TasksIndexViewModel(tasks, sortBy, asc, page, pageSize);
+            
+            vm.PopulateSelectListOptions();
+            
+            return View(vm);
         }
+        
+        // POST: Tasks
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateTaskStatusPriority(int TaskId, Priority Priority, Status Status,
+            string? sortBy, bool asc = true, int page = 1, int pageSize = 10)
+        {
+            Console.WriteLine("POST CALLED UPDATE");
+            var task = await GetUserTaskItemAsync(TaskId);
+            if (task == null) return NotFound();
+
+            task.Priority = Priority;
+            task.Status = Status;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { sortBy, asc, page, pageSize});
+        }
+
 
         // GET: Tasks/Details/5
         [Authorize]
