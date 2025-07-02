@@ -30,8 +30,6 @@ namespace AdvancedTaskTracker.Controllers
             
             var vm = new TasksIndexViewModel(tasks, sortBy, asc, page, pageSize);
             
-            vm.PopulateSelectListOptions();
-            
             return View(vm);
         }
         
