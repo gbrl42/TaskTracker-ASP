@@ -1,4 +1,4 @@
-## TaskTracker-MVC
+## TaskTracker-ASP
 
 Technologies: C#, ASP.NET MVC, EF Core, SQLite, Bootstrap
 
